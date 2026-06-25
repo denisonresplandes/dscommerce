@@ -21,10 +21,10 @@ public class UserEntity {
     @Column(nullable = false, length = 20)
     private String phone;
 
-    @Column(nullable = false)
+    @Column(name = "date_of_birth", nullable = false)
     private LocalDate dateOfBirth;
 
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
     private String passwordHash;
 
     UserEntity() {}
