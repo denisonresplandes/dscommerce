@@ -1,4 +1,4 @@
-package com.devsuperior.dscommerce.user.domain.vo;
+package com.devsuperior.dscommerce.users.domain.vo;
 
 import java.time.LocalDate;
 import java.util.Objects;

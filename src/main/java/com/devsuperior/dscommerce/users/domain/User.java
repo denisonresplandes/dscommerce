@@ -1,11 +1,12 @@
-package com.devsuperior.dscommerce.user.domain;
+package com.devsuperior.dscommerce.users.domain;
 
-import com.devsuperior.dscommerce.user.domain.vo.UserId;
-import com.devsuperior.dscommerce.user.domain.vo.*;
+import com.devsuperior.dscommerce.shared.domain.AggregateRoot;
+import com.devsuperior.dscommerce.users.domain.vo.UserId;
+import com.devsuperior.dscommerce.users.domain.vo.*;
 
 import java.util.Objects;
 
-public class User {
+public class User extends AggregateRoot {
 
     private final UserId userId;
     private final Name name;
@@ -83,8 +84,8 @@ public class User {
         return dateOfBirth;
     }
 
-    public String getPasswordHash() {
-        return passwordHash.value();
+    public PasswordHash getPasswordHash() {
+        return passwordHash;
     }
 
     public void changePassword(PasswordHash passwordHash) {
