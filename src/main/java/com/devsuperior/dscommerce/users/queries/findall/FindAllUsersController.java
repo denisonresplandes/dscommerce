@@ -10,9 +10,9 @@ import java.util.List;
 @RequestMapping("/users")
 public class FindAllUsersController {
 
-    private final FindAllUsersHandler handler;
+    private final FindAllUsersQueryHandler handler;
 
-    public FindAllUsersController(FindAllUsersHandler handler) {
+    public FindAllUsersController(FindAllUsersQueryHandler handler) {
         this.handler = handler;
     }
 
