@@ -2,7 +2,7 @@ package com.devsuperior.dscommerce.users.queries.findall;
 
 import java.time.LocalDate;
 
-public record FindAllUserResponse(
+public record FindAllUsersResponse(
         Long id,
         String name,
         String email,

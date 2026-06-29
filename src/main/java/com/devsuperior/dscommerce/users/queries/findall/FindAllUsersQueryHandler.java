@@ -14,10 +14,10 @@ public class FindAllUsersQueryHandler {
         this.userRepository = userRepository;
     }
 
-    public List<FindAllUserResponse> execute() {
+    public List<FindAllUsersResponse> execute() {
         return userRepository.findAll()
                 .stream()
-                .map(FindAllUserResponseMapper::toResponse)
+                .map(FindAllUsersResponseMapper::toResponse)
                 .toList();
     }
 }

@@ -1,16 +1,17 @@
-package com.devsuperior.dscommerce.users.queries.findall;
+package com.devsuperior.dscommerce.users.commands.create;
 
+import com.devsuperior.dscommerce.users.commands.create.dto.CreateUserResponse;
 import com.devsuperior.dscommerce.users.domain.User;
 
 import java.util.Objects;
 
-public final class FindAllUserResponseMapper {
+public final class CreateUserResponseMapper {
 
-    private FindAllUserResponseMapper() {}
+    private CreateUserResponseMapper() {}
 
-    public static FindAllUserResponse toResponse(User user) {
+    public static CreateUserResponse toResponse(User user) {
         Objects.requireNonNull(user, "user is required");
-        return new FindAllUserResponse(
+        return new CreateUserResponse(
                 user.getId().value(),
                 user.getName().value(),
                 user.getEmail().value(),

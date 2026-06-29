@@ -17,7 +17,7 @@ public class FindAllUsersController {
     }
 
     @GetMapping
-    public List<FindAllUserResponse> findAll() {
+    public List<FindAllUsersResponse> findAll() {
         return handler.execute();
     }
 }
