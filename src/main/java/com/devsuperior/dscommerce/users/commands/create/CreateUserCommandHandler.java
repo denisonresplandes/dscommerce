@@ -2,8 +2,12 @@ package com.devsuperior.dscommerce.users.commands.create;
 
 import com.devsuperior.dscommerce.users.commands.create.dto.CreateUserResponse;
 import com.devsuperior.dscommerce.users.domain.User;
+import com.devsuperior.dscommerce.users.domain.UserPasswordHasher;
 import com.devsuperior.dscommerce.users.domain.UserRepository;
-import com.devsuperior.dscommerce.users.domain.vo.*;
+import com.devsuperior.dscommerce.users.domain.vo.DateOfBirth;
+import com.devsuperior.dscommerce.users.domain.vo.Email;
+import com.devsuperior.dscommerce.users.domain.vo.Name;
+import com.devsuperior.dscommerce.users.domain.vo.Phone;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -11,9 +15,11 @@ import java.util.Objects;
 @Service
 public class CreateUserCommandHandler {
 
+    private final UserPasswordHasher hasher;
     private final UserRepository userRepository;
 
-    public CreateUserCommandHandler(UserRepository userRepository) {
+    public CreateUserCommandHandler(UserPasswordHasher hasher, UserRepository userRepository) {
+        this.hasher = hasher;
         this.userRepository = userRepository;
     }
 
@@ -24,7 +30,7 @@ public class CreateUserCommandHandler {
                 new Email(command.email()),
                 new Phone(command.phone()),
                 new DateOfBirth(command.dateOfBirth()),
-                new PasswordHash(command.password())
+                hasher.toHash(command.password())
         );
         User userSaved = userRepository.save(newUser);
         return CreateUserResponseMapper.toResponse(userSaved);
