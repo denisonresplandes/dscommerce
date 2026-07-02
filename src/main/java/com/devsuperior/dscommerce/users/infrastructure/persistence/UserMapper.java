@@ -28,11 +28,17 @@ public final class UserMapper {
         Objects.requireNonNull(entity, "entity is required");
         return User.restore(
                 new UserId(entity.getId()),
-                new Name(entity.getName()),
-                new Email(entity.getEmail()),
-                new Phone(entity.getPhone()),
-                new DateOfBirth(entity.getDateOfBirth()),
-                new PasswordHash(entity.getPasswordHash())
+                new PersonalInfo(
+                        new Name(entity.getName()),
+                        new DateOfBirth(entity.getDateOfBirth())
+                ),
+                new ContactsInfo(
+                        new Email(entity.getEmail()),
+                        new Phone(entity.getPhone())
+                ),
+                new Credentials(
+                        new PasswordHash(entity.getPasswordHash())
+                )
         );
     }
 }

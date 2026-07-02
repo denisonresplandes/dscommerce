@@ -9,44 +9,37 @@ import java.util.Objects;
 public class User extends AggregateRoot {
 
     private final UserId userId;
-    private final Name name;
-    private Email email;
-    private Phone phone;
-    private final DateOfBirth dateOfBirth;
-    private PasswordHash passwordHash;
+    private final PersonalInfo personalInfo;
+    private ContactsInfo contactsInfo;
+    private Credentials credentials;
 
-    private User(UserId userId, Name name, Email email,
-                 Phone phone, DateOfBirth dateOfBirth, PasswordHash passwordHash) {
+    private User(UserId userId, PersonalInfo personalInfo, ContactsInfo contactsInfo,
+                 Credentials credentials) {
         this.userId = userId;
-        this.name = Objects.requireNonNull(name, "name is required");
-        this.email = Objects.requireNonNull(email, "email is required");
-        this.phone = Objects.requireNonNull(phone, "phone number is required");
-        this.dateOfBirth = Objects.requireNonNull(dateOfBirth, "date of birth is required");
-        this.passwordHash = Objects.requireNonNull(passwordHash, "password hash is required");
+        this.personalInfo = Objects.requireNonNull(personalInfo, "user personal info is required");
+        this.contactsInfo = Objects.requireNonNull(contactsInfo, "user contact information is required");
+        this.credentials = Objects.requireNonNull(credentials, "user credentials are required");
     }
 
-    public static User create(Name name, Email email, Phone phone,
-                              DateOfBirth dateOfBirth, PasswordHash passwordHash) {
+    public static User create(PersonalInfo personalInfo, ContactsInfo contactsInfo,
+                              Credentials credentials) {
         return new User(
                 null,
-                name,
-                email,
-                phone,
-                dateOfBirth,
-                passwordHash
+                personalInfo,
+                contactsInfo,
+                credentials
         );
     }
 
-    public static User restore(UserId userId, Name name, Email email, Phone phone,
-                               DateOfBirth dateOfBirth, PasswordHash passwordHash) {
+    public static User restore(UserId userId, PersonalInfo personalInfo,
+                               ContactsInfo contactsInfo,
+                               Credentials credentials) {
         Objects.requireNonNull(userId, "user id is required");
         return new User(
                 userId,
-                name,
-                email,
-                phone,
-                dateOfBirth,
-                passwordHash
+                personalInfo,
+                contactsInfo,
+                credentials
         );
     }
 
@@ -55,44 +48,35 @@ public class User extends AggregateRoot {
     }
 
     public Name getName() {
-        return name;
+        return personalInfo.name();
     }
 
     public Email getEmail() {
-        return email;
+        return contactsInfo.email();
     }
 
     public void changeEmail(Email email) {
-        this.email = Objects.requireNonNull(
-                email,
-                "email is required"
-        );
+        this.contactsInfo = this.contactsInfo.withEmail(email);
     }
 
     public Phone getPhone() {
-        return phone;
+        return contactsInfo.phone();
     }
 
     public void changePhone(Phone phone) {
-        this.phone = Objects.requireNonNull(
-                phone,
-                "phone number is required"
-        );
+        this.contactsInfo = this.contactsInfo.withPhone(phone);
     }
 
     public DateOfBirth getDateOfBirth() {
-        return dateOfBirth;
+        return this.personalInfo.dateOfBirth();
     }
 
     public PasswordHash getPasswordHash() {
-        return passwordHash;
+        return this.credentials.passwordHash();
     }
 
     public void changePassword(PasswordHash passwordHash) {
-        this.passwordHash = Objects.requireNonNull(
-                passwordHash,
-                "password hash is required"
-        );
+        this.credentials = this.credentials.withPasswordHash(passwordHash);
     }
     // demais metodos..
 
