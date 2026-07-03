@@ -8,14 +8,14 @@ import java.util.Objects;
 
 public class User extends AggregateRoot {
 
-    private final UserId userId;
+    private final UserId id;
     private final PersonalInfo personalInfo;
     private ContactsInfo contactsInfo;
     private Credentials credentials;
 
-    private User(UserId userId, PersonalInfo personalInfo, ContactsInfo contactsInfo,
+    private User(UserId id, PersonalInfo personalInfo, ContactsInfo contactsInfo,
                  Credentials credentials) {
-        this.userId = userId;
+        this.id = id;
         this.personalInfo = Objects.requireNonNull(personalInfo, "user personal info is required");
         this.contactsInfo = Objects.requireNonNull(contactsInfo, "user contact information is required");
         this.credentials = Objects.requireNonNull(credentials, "user credentials are required");
@@ -31,12 +31,12 @@ public class User extends AggregateRoot {
         );
     }
 
-    public static User restore(UserId userId, PersonalInfo personalInfo,
+    public static User restore(UserId id, PersonalInfo personalInfo,
                                ContactsInfo contactsInfo,
                                Credentials credentials) {
-        Objects.requireNonNull(userId, "user id is required");
+        Objects.requireNonNull(id, "user id is required");
         return new User(
-                userId,
+                id,
                 personalInfo,
                 contactsInfo,
                 credentials
@@ -44,7 +44,7 @@ public class User extends AggregateRoot {
     }
 
     public UserId getId() {
-        return userId;
+        return id;
     }
 
     public Name getName() {
@@ -85,10 +85,10 @@ public class User extends AggregateRoot {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof User that)) {
+        if (!(o instanceof User other)) {
             return false;
         }
-        return userId != null && userId.equals(that.userId);
+        return id != null && id.equals(other.id);
     }
 
     @Override
