@@ -1,8 +1,8 @@
-package com.devsuperior.dscommerce.users.queries.findall;
+package com.devsuperior.dscommerce.users.queries;
 
 import java.time.LocalDate;
 
-public record FindAllUsersResponse(
+public record FindUserResponse(
         Long id,
         String name,
         String email,

@@ -16,9 +16,9 @@ import java.net.URI;
 @RequestMapping("/users")
 public class CreateUserController {
 
-    private final CreateUserCommandHandler handler;
+    private final CreateUserHandler handler;
 
-    public CreateUserController(CreateUserCommandHandler handler) {
+    public CreateUserController(CreateUserHandler handler) {
         this.handler = handler;
     }
 

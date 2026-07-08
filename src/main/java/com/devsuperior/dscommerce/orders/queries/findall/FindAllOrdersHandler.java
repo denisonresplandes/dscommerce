@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class FindAllOrdersQueryHandler {
+public class FindAllOrdersHandler {
 
     private final OrderRepository repository;
 
-    public FindAllOrdersQueryHandler(OrderRepository repository) {
+    public FindAllOrdersHandler(OrderRepository repository) {
         this.repository = repository;
     }
 

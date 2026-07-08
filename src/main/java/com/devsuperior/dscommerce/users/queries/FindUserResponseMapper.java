@@ -1,16 +1,15 @@
-package com.devsuperior.dscommerce.users.queries.findbyemail;
+package com.devsuperior.dscommerce.users.queries;
 
 import com.devsuperior.dscommerce.users.domain.User;
-
 import java.util.Objects;
 
-public final class FindUserByEmailResponseMapper {
+public final class FindUserResponseMapper {
 
-    private FindUserByEmailResponseMapper() {}
+    private FindUserResponseMapper() {}
 
-    public static FindUserByEmailResponse toResponse(User user) {
+    public static FindUserResponse toResponse(User user) {
         Objects.requireNonNull(user, "user is required");
-        return new FindUserByEmailResponse(
+        return new FindUserResponse(
                 user.getId().value(),
                 user.getName().value(),
                 user.getEmail().value(),

@@ -1,23 +1,25 @@
 package com.devsuperior.dscommerce.users.queries.findall;
 
 import com.devsuperior.dscommerce.users.domain.UserRepository;
+import com.devsuperior.dscommerce.users.queries.FindUserResponse;
+import com.devsuperior.dscommerce.users.queries.FindUserResponseMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class FindAllUsersQueryHandler {
+public class FindAllUsersHandler {
 
     private final UserRepository userRepository;
 
-    public FindAllUsersQueryHandler(UserRepository userRepository) {
+    public FindAllUsersHandler(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public List<FindAllUsersResponse> execute() {
+    public List<FindUserResponse> execute() {
         return userRepository.findAll()
                 .stream()
-                .map(FindAllUsersResponseMapper::toResponse)
+                .map(FindUserResponseMapper::toResponse)
                 .toList();
     }
 }

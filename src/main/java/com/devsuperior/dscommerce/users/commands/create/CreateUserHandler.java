@@ -10,19 +10,25 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 
 @Service
-public class CreateUserCommandHandler {
+public class CreateUserHandler {
 
     private final UserPasswordHasher hasher;
     private final UserRepository userRepository;
 
-    public CreateUserCommandHandler(UserPasswordHasher hasher, UserRepository userRepository) {
+    public CreateUserHandler(UserPasswordHasher hasher, UserRepository userRepository) {
         this.hasher = hasher;
         this.userRepository = userRepository;
     }
 
     public CreateUserResponse execute(CreateUserCommand command) {
         Objects.requireNonNull(command, "create user command is required");
-        User newUser = User.create(
+        User newUser = createUser(command);
+        User userSaved = userRepository.save(newUser);
+        return CreateUserResponseMapper.toResponse(userSaved);
+    }
+
+    private User createUser(CreateUserCommand command) {
+        return User.create(
                 new PersonalInfo(
                         new Name(command.name()),
                         new DateOfBirth(command.dateOfBirth())
@@ -35,7 +41,5 @@ public class CreateUserCommandHandler {
                         hasher.toHash(command.password())
                 )
         );
-        User userSaved = userRepository.save(newUser);
-        return CreateUserResponseMapper.toResponse(userSaved);
     }
 }

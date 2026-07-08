@@ -1,5 +1,6 @@
 package com.devsuperior.dscommerce.users.queries.findall;
 
+import com.devsuperior.dscommerce.users.queries.FindUserResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,14 +11,14 @@ import java.util.List;
 @RequestMapping("/users")
 public class FindAllUsersController {
 
-    private final FindAllUsersQueryHandler handler;
+    private final FindAllUsersHandler handler;
 
-    public FindAllUsersController(FindAllUsersQueryHandler handler) {
+    public FindAllUsersController(FindAllUsersHandler handler) {
         this.handler = handler;
     }
 
     @GetMapping
-    public List<FindAllUsersResponse> findAll() {
+    public List<FindUserResponse> findAll() {
         return handler.execute();
     }
 }

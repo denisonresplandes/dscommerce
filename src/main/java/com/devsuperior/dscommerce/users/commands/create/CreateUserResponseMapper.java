@@ -10,7 +10,7 @@ public final class CreateUserResponseMapper {
     private CreateUserResponseMapper() {}
 
     public static CreateUserResponse toResponse(User user) {
-        Objects.requireNonNull(user, "user is required");
+        Objects.requireNonNull(user, "user response is required");
         return new CreateUserResponse(
                 user.getId().value(),
                 user.getName().value(),
