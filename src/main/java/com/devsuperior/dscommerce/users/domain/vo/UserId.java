@@ -2,8 +2,9 @@ package com.devsuperior.dscommerce.users.domain.vo;
 
 import java.util.Objects;
 
-public record UserId(Long value) {
-
+public record UserId(
+        Long value
+) {
     public UserId {
         Objects.requireNonNull(value, "id is required");
         if (value <= 0) {
