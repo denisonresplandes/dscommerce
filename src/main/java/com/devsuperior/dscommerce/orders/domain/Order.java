@@ -2,7 +2,7 @@ package com.devsuperior.dscommerce.orders.domain;
 
 import com.devsuperior.dscommerce.orders.domain.vo.OrderId;
 import com.devsuperior.dscommerce.shared.domain.AggregateRoot;
-import com.devsuperior.dscommerce.shared.domain.DomainException;
+import com.devsuperior.dscommerce.shared.exceptions.DomainException;
 import com.devsuperior.dscommerce.users.domain.vo.UserId;
 
 import java.time.LocalDateTime;
@@ -19,8 +19,8 @@ public class Order extends AggregateRoot {
                   LocalDateTime createdAt) {
         this.id = id;
         this.userId = Objects.requireNonNull(userId, "user id is required");
-        this.status = Objects.requireNonNull(status, "order status data is required");
-        this.createdAt = Objects.requireNonNull(createdAt, "created data is required");
+        this.status = Objects.requireNonNull(status, "order status is required");
+        this.createdAt = Objects.requireNonNull(createdAt, "created date is required");
     }
 
     public static Order create(UserId userId) {

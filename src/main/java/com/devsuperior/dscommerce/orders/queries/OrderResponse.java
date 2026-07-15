@@ -1,10 +1,10 @@
-package com.devsuperior.dscommerce.orders.queries.findall;
+package com.devsuperior.dscommerce.orders.queries;
 
 import com.devsuperior.dscommerce.orders.domain.OrderStatus;
 
 import java.time.LocalDateTime;
 
-public record FindAllOrdersResponse(
+public record OrderResponse(
         Long id,
         Long userId,
         OrderStatus status,

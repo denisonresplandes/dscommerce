@@ -3,7 +3,7 @@ package com.devsuperior.dscommerce.users.commands.create;
 import com.devsuperior.dscommerce.users.commands.create.dto.CreateUserResponse;
 import com.devsuperior.dscommerce.users.domain.User;
 import com.devsuperior.dscommerce.users.domain.UserPasswordHasher;
-import com.devsuperior.dscommerce.users.domain.UserRepository;
+import com.devsuperior.dscommerce.users.domain.UserWriteRepository;
 import com.devsuperior.dscommerce.users.domain.vo.*;
 import org.springframework.stereotype.Service;
 
@@ -13,18 +13,18 @@ import java.util.Objects;
 public class CreateUserHandler {
 
     private final UserPasswordHasher hasher;
-    private final UserRepository userRepository;
+    private final UserWriteRepository userWriteRepository;
 
-    public CreateUserHandler(UserPasswordHasher hasher, UserRepository userRepository) {
+    public CreateUserHandler(UserPasswordHasher hasher, UserWriteRepository userWriteRepository) {
         this.hasher = hasher;
-        this.userRepository = userRepository;
+        this.userWriteRepository = userWriteRepository;
     }
 
     public CreateUserResponse execute(CreateUserCommand command) {
         Objects.requireNonNull(command, "create user command is required");
         User newUser = createUser(command);
-        User userSaved = userRepository.save(newUser);
-        return CreateUserResponseMapper.toResponse(userSaved);
+        User userSaved = userWriteRepository.save(newUser);
+        return CreateUserMapper.toResponse(userSaved);
     }
 
     private User createUser(CreateUserCommand command) {

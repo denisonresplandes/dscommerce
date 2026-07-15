@@ -1,5 +1,6 @@
 package com.devsuperior.dscommerce.orders.queries.findall;
 
+import com.devsuperior.dscommerce.orders.queries.OrderResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +18,7 @@ public class FindAllOrdersController {
     }
 
     @GetMapping
-    public List<FindAllOrdersResponse> findAll() {
+    public List<OrderResponse> findAll() {
         return handler.execute();
     }
 }

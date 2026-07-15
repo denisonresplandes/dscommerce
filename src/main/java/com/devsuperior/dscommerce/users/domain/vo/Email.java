@@ -10,11 +10,11 @@ public record Email(String value) {
 
     public Email {
         // validação e normalização
-        value = Objects.requireNonNull(value, "mail address is required")
+        value = Objects.requireNonNull(value, "user mail address is required")
                 .trim()
                 .toLowerCase();
         if (value.isBlank() || !PATTERN.matcher(value).matches()) {
-            throw new IllegalArgumentException("invalid email address");
+            throw new IllegalArgumentException("invalid user email address");
         }
     }
 }

@@ -1,25 +1,27 @@
 package com.devsuperior.dscommerce.users.queries.findall;
 
-import com.devsuperior.dscommerce.users.domain.UserRepository;
-import com.devsuperior.dscommerce.users.queries.FindUserResponse;
-import com.devsuperior.dscommerce.users.queries.FindUserResponseMapper;
+import com.devsuperior.dscommerce.users.domain.UserReadRepository;
+import com.devsuperior.dscommerce.users.queries.UserResponse;
+import com.devsuperior.dscommerce.users.queries.UserResponseMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class FindAllUsersHandler {
 
-    private final UserRepository userRepository;
+    private final UserReadRepository userReadRepository;
 
-    public FindAllUsersHandler(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public FindAllUsersHandler(UserReadRepository userReadRepository) {
+        this.userReadRepository = userReadRepository;
     }
 
-    public List<FindUserResponse> execute() {
-        return userRepository.findAll()
+    @Transactional(readOnly = true)
+    public List<UserResponse> execute() {
+        return userReadRepository.findAll()
                 .stream()
-                .map(FindUserResponseMapper::toResponse)
+                .map(UserResponseMapper::toResponse)
                 .toList();
     }
 }

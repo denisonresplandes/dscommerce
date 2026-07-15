@@ -6,15 +6,15 @@ public record Phone(String value) {
 
     public Phone {
         // validação e normalização
-        value = Objects.requireNonNull(value, "phone number is required")
+        value = Objects.requireNonNull(value, "user phone number is required")
                 .trim()
                 .replaceAll("\\D", "");
         if (value.isBlank()) {
-            throw new IllegalArgumentException("phone number cannot be blank");
+            throw new IllegalArgumentException("user phone number cannot be blank");
         }
         // regra de domínio local para o Brasil.
         if (value.length() != 11) {
-            throw new IllegalArgumentException("phone number length must be 11 digits");
+            throw new IllegalArgumentException("user phone number length must be 11 digits");
         }
     }
 }

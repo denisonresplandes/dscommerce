@@ -1,6 +1,7 @@
 package com.devsuperior.dscommerce.orders.infraestructure.persistence;
 
 import com.devsuperior.dscommerce.orders.domain.Order;
+import com.devsuperior.dscommerce.orders.domain.OrderSummary;
 import com.devsuperior.dscommerce.orders.domain.vo.OrderId;
 import com.devsuperior.dscommerce.users.domain.vo.UserId;
 
@@ -28,6 +29,16 @@ public final class OrderMapper {
                 new UserId(entity.getUserId()),
                 entity.getStatus(),
                 entity.getCreatedAt()
+        );
+    }
+
+    public static OrderSummary toSummary(OrderSummaryProjection projection) {
+        Objects.requireNonNull(projection, "order projection is required");
+        return new OrderSummary(
+                new OrderId(projection.getId()),
+                new UserId(projection.getUserId()),
+                projection.getStatus(),
+                projection.getCreatedAt()
         );
     }
 }

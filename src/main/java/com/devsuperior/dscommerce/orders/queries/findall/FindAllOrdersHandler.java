@@ -1,23 +1,27 @@
 package com.devsuperior.dscommerce.orders.queries.findall;
 
-import com.devsuperior.dscommerce.orders.domain.OrderRepository;
+import com.devsuperior.dscommerce.orders.domain.OrderReadRepository;
+import com.devsuperior.dscommerce.orders.queries.OrderResponseMapper;
+import com.devsuperior.dscommerce.orders.queries.OrderResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class FindAllOrdersHandler {
 
-    private final OrderRepository repository;
+    private final OrderReadRepository repository;
 
-    public FindAllOrdersHandler(OrderRepository repository) {
+    public FindAllOrdersHandler(OrderReadRepository repository) {
         this.repository = repository;
     }
 
-    public List<FindAllOrdersResponse> execute() {
+    @Transactional(readOnly = true)
+    public List<OrderResponse> execute() {
         return repository.findAll()
                 .stream()
-                .map(FindAllOrdersResponseMapper::toResponse)
+                .map(OrderResponseMapper::toResponse)
                 .toList();
     }
 

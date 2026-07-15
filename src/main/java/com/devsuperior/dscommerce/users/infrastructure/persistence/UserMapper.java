@@ -1,6 +1,7 @@
 package com.devsuperior.dscommerce.users.infrastructure.persistence;
 
 import com.devsuperior.dscommerce.users.domain.User;
+import com.devsuperior.dscommerce.users.domain.UserSummary;
 import com.devsuperior.dscommerce.users.domain.vo.*;
 
 import java.util.Objects;
@@ -38,6 +39,21 @@ public final class UserMapper {
                 ),
                 new Credentials(
                         new PasswordHash(entity.getPasswordHash())
+                )
+        );
+    }
+
+    public static UserSummary toSummary(UserSummaryProjection projection) {
+        Objects.requireNonNull(projection, "projection is required");
+        return new UserSummary(
+                new UserId(projection.getId()),
+                new PersonalInfo(
+                        new Name(projection.getName()),
+                        new DateOfBirth(projection.getDateOfBirth())
+                ),
+                new ContactsInfo(
+                        new Email(projection.getEmail()),
+                        new Phone(projection.getPhone())
                 )
         );
     }

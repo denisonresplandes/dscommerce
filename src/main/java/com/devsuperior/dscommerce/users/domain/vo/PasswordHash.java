@@ -5,9 +5,9 @@ import java.util.Objects;
 public record PasswordHash(String value) {
 
     public PasswordHash {
-        Objects.requireNonNull(value, "password hash is required");
+        Objects.requireNonNull(value, "user password hash is required");
         if (value.isBlank()) {
-            throw new IllegalArgumentException("password hash cannot be blank.");
+            throw new IllegalArgumentException("user password hash cannot be blank.");
         }
         // Verificação básica
         // Hashes Argon2 sempre começam com $argon2id$ ou similar.

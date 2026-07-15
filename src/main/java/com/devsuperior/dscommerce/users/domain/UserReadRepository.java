@@ -6,13 +6,13 @@ import com.devsuperior.dscommerce.users.domain.vo.UserId;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository {
+public interface UserReadRepository {
 
-    User save(User user);
+    Optional<UserSummary> findById(UserId id);
 
-    Optional<User> findById(UserId id);
+    Optional<UserSummary> findByEmail(Email email);
 
-    Optional<User> findByEmail(Email email);
+    List<UserSummary> findAll();
 
-    List<User> findAll();
+    boolean existsById(UserId id);
 }

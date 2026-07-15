@@ -1,4 +1,4 @@
-package com.devsuperior.dscommerce.shared.domain;
+package com.devsuperior.dscommerce.shared.exceptions;
 
 public class DomainException extends RuntimeException {
 

@@ -25,7 +25,7 @@ public class CreateUserController {
     @PostMapping
     public ResponseEntity<CreateUserResponse> create(@RequestBody @Valid CreateUserRequest request,
                                                      UriComponentsBuilder uriBuilder) {
-        CreateUserCommand command = CreateUserRequestMapper.toCommand(request);
+        CreateUserCommand command = CreateUserMapper.toCommand(request);
         CreateUserResponse response = handler.execute(command);
         URI location = uriBuilder.path("/users/{id}").buildAndExpand(response.id()).toUri();
         return ResponseEntity.created(location).body(response);

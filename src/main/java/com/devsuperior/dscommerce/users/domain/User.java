@@ -1,7 +1,6 @@
 package com.devsuperior.dscommerce.users.domain;
 
 import com.devsuperior.dscommerce.shared.domain.AggregateRoot;
-import com.devsuperior.dscommerce.users.domain.vo.UserId;
 import com.devsuperior.dscommerce.users.domain.vo.*;
 
 import java.util.Objects;
