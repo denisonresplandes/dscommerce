@@ -7,7 +7,6 @@ import com.devsuperior.dscommerce.users.domain.vo.UserId;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -29,14 +28,12 @@ public class JpaOrderReadRepositoryAdapter implements OrderReadRepository {
 
     @Override
     public Optional<OrderSummary> findById(OrderId id) {
-        Objects.requireNonNull(id, "order id is required");
         return springDataRepository.findByIdSummary(id.value())
                 .map(OrderMapper::toSummary);
     }
 
     @Override
     public List<OrderSummary> findAllByUserId(UserId id) {
-        Objects.requireNonNull(id, "user id is required");
         return springDataRepository.findAllByUserIdSummary(id.value())
                 .stream()
                 .map(OrderMapper::toSummary)
