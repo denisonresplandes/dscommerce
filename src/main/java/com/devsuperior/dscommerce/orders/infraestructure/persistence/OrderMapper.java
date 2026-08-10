@@ -12,7 +12,6 @@ public final class OrderMapper {
     private OrderMapper() {}
 
     public static OrderEntity toEntity(Order order) {
-        Objects.requireNonNull(order, " order is required");
         Long id = Objects.nonNull(order.getId()) ? order.getId().value() : null;
         return new OrderEntity(
                 id,
@@ -23,7 +22,6 @@ public final class OrderMapper {
     }
 
     public static Order toDomain(OrderEntity entity) {
-        Objects.requireNonNull(entity, "order entity is required");
         return Order.restore(
                 new OrderId(entity.getId()),
                 new UserId(entity.getUserId()),
@@ -33,7 +31,6 @@ public final class OrderMapper {
     }
 
     public static OrderSummary toSummary(OrderSummaryProjection projection) {
-        Objects.requireNonNull(projection, "order projection is required");
         return new OrderSummary(
                 new OrderId(projection.getId()),
                 new UserId(projection.getUserId()),
