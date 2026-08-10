@@ -2,11 +2,10 @@ package com.devsuperior.dscommerce.orders.domain;
 
 import com.devsuperior.dscommerce.orders.domain.vo.OrderId;
 import com.devsuperior.dscommerce.shared.domain.AggregateRoot;
-import com.devsuperior.dscommerce.shared.exceptions.DomainException;
+import com.devsuperior.dscommerce.shared.domain.DomainException;
 import com.devsuperior.dscommerce.users.domain.vo.UserId;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 public class Order extends AggregateRoot {
 
@@ -17,10 +16,14 @@ public class Order extends AggregateRoot {
 
     private Order(OrderId id, UserId userId, OrderStatus status,
                   LocalDateTime createdAt) {
+        DomainException.requireNonNull(userId, "user id cannot be null");
+        DomainException.requireNonNull(status, "order status cannot be null");
+        DomainException.requireNonNull(createdAt, "created date cannot be null");
+
         this.id = id;
-        this.userId = Objects.requireNonNull(userId, "user id is required");
-        this.status = Objects.requireNonNull(status, "order status is required");
-        this.createdAt = Objects.requireNonNull(createdAt, "created date is required");
+        this.userId = userId;
+        this.status = status;
+        this.createdAt = createdAt;
     }
 
     public static Order create(UserId userId) {
@@ -34,7 +37,7 @@ public class Order extends AggregateRoot {
 
     public static Order restore(OrderId id, UserId userId, OrderStatus status,
                                 LocalDateTime createdAt) {
-        Objects.requireNonNull(id, "order id is required");
+        DomainException.requireNonNull(id,"Order ID cannot be null.");
         return new Order(
                 id,
                 userId,

@@ -1,9 +1,8 @@
 package com.devsuperior.dscommerce.users.domain;
 
 import com.devsuperior.dscommerce.shared.domain.AggregateRoot;
+import com.devsuperior.dscommerce.shared.domain.DomainException;
 import com.devsuperior.dscommerce.users.domain.vo.*;
-
-import java.util.Objects;
 
 public class User extends AggregateRoot {
 
@@ -14,10 +13,14 @@ public class User extends AggregateRoot {
 
     private User(UserId id, PersonalInfo personalInfo, ContactsInfo contactsInfo,
                  Credentials credentials) {
+        DomainException.requireNonNull(personalInfo, "user personal info cannot be null");
+        DomainException.requireNonNull(contactsInfo, "user contact info cannot be null");
+        DomainException.requireNonNull(credentials, "user credentials cannot be null");
+
         this.id = id;
-        this.personalInfo = Objects.requireNonNull(personalInfo, "user personal info is required");
-        this.contactsInfo = Objects.requireNonNull(contactsInfo, "user contact information is required");
-        this.credentials = Objects.requireNonNull(credentials, "user credentials are required");
+        this.personalInfo = personalInfo;
+        this.contactsInfo = contactsInfo;
+        this.credentials = credentials;
     }
 
     public static User create(PersonalInfo personalInfo, ContactsInfo contactsInfo,
@@ -33,7 +36,7 @@ public class User extends AggregateRoot {
     public static User restore(UserId id, PersonalInfo personalInfo,
                                ContactsInfo contactsInfo,
                                Credentials credentials) {
-        Objects.requireNonNull(id, "user id is required");
+        DomainException.requireNonNull(id,"User ID cannot be null.");
         return new User(
                 id,
                 personalInfo,

@@ -1,14 +1,11 @@
 package com.devsuperior.dscommerce.orders.domain.vo;
 
-import java.util.Objects;
+import com.devsuperior.dscommerce.shared.domain.DomainException;
 
 public record OrderId(
         Long value
 ) {
     public OrderId {
-        Objects.requireNonNull(value, "order id is required");
-        if (value <= 0) {
-            throw new IllegalArgumentException("order id must be greater than zero");
-        }
+        DomainException.requirePositive(value, "order id must be a positive number.");
     }
 }
