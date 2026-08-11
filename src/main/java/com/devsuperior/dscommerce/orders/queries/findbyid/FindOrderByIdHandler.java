@@ -3,12 +3,11 @@ package com.devsuperior.dscommerce.orders.queries.findbyid;
 import com.devsuperior.dscommerce.orders.domain.OrderReadRepository;
 import com.devsuperior.dscommerce.orders.domain.vo.OrderId;
 import com.devsuperior.dscommerce.orders.exceptions.OrderNotFoundException;
-import com.devsuperior.dscommerce.orders.queries.OrderResponseMapper;
 import com.devsuperior.dscommerce.orders.queries.OrderResponse;
+import com.devsuperior.dscommerce.orders.queries.OrderResponseMapper;
+import com.devsuperior.dscommerce.shared.domain.DomainException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Objects;
 
 @Service
 public class FindOrderByIdHandler {
@@ -21,7 +20,7 @@ public class FindOrderByIdHandler {
 
     @Transactional(readOnly = true)
     public OrderResponse execute(FindOrderByIdQuery query) {
-        Objects.requireNonNull(query, "order id query is required");
+        DomainException.requireNonNull(query, "order id query cannot be null");
         OrderId id = new OrderId(query.id());
         return repository.findById(id)
                 .map(OrderResponseMapper::toResponse)

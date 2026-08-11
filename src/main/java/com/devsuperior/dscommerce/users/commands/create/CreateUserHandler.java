@@ -1,13 +1,12 @@
 package com.devsuperior.dscommerce.users.commands.create;
 
+import com.devsuperior.dscommerce.shared.domain.DomainException;
 import com.devsuperior.dscommerce.users.commands.create.dto.CreateUserResponse;
 import com.devsuperior.dscommerce.users.domain.User;
 import com.devsuperior.dscommerce.users.domain.UserPasswordHasher;
 import com.devsuperior.dscommerce.users.domain.UserWriteRepository;
 import com.devsuperior.dscommerce.users.domain.vo.*;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 public class CreateUserHandler {
@@ -21,7 +20,7 @@ public class CreateUserHandler {
     }
 
     public CreateUserResponse execute(CreateUserCommand command) {
-        Objects.requireNonNull(command, "create user command is required");
+        DomainException.requireNonNull(command, "create user command cannot be null");
         User newUser = createUser(command);
         User userSaved = userWriteRepository.save(newUser);
         return CreateUserMapper.toResponse(userSaved);

@@ -5,8 +5,6 @@ import com.devsuperior.dscommerce.users.domain.UserWriteRepository;
 import com.devsuperior.dscommerce.users.domain.vo.UserId;
 import org.springframework.stereotype.Repository;
 
-import java.util.Objects;
-
 @Repository
 public class JpaUserWriteRepositoryAdapter implements UserWriteRepository {
 
@@ -18,7 +16,6 @@ public class JpaUserWriteRepositoryAdapter implements UserWriteRepository {
 
     @Override
     public User save(User user) {
-        Objects.requireNonNull(user, "user is required");
         UserEntity entityToSave = UserMapper.toEntity(user);
         UserEntity savedEntity = springDataRepository.save(entityToSave);
         return UserMapper.toDomain(savedEntity);
@@ -26,13 +23,11 @@ public class JpaUserWriteRepositoryAdapter implements UserWriteRepository {
 
     @Override
     public void delete(User user) {
-        Objects.requireNonNull(user, "user is required");
         springDataRepository.delete(UserMapper.toEntity(user));
     }
 
     @Override
     public void deleteById(UserId id) {
-        Objects.requireNonNull(id, "user id is required");
         springDataRepository.deleteById(id.value());
     }
 }
