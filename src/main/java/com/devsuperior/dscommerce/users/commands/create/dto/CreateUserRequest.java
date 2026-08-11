@@ -1,6 +1,8 @@
 package com.devsuperior.dscommerce.users.commands.create.dto;
 
+import com.devsuperior.dscommerce.users.commands.create.CreateUserCommand;
 import jakarta.validation.constraints.*;
+
 import java.time.LocalDate;
 
 public record CreateUserRequest(
@@ -26,4 +28,7 @@ public record CreateUserRequest(
         @Size(min = 6, max = 20)
         String password
 ) {
+    public CreateUserCommand toCommand() {
+        return new CreateUserCommand(name, email, phone, dateOfBirth, password);
+    }
 }
