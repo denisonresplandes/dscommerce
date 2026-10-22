@@ -1,6 +1,8 @@
 package com.devsuperior.dscommerce.users.exceptions;
 
-public class UserNotFoundException extends RuntimeException {
+import com.devsuperior.dscommerce.shared.application.NotFoundException;
+
+public class UserNotFoundException extends NotFoundException {
 
     public UserNotFoundException(Long id) {
         super("User with id %d not found.".formatted(id));
