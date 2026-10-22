@@ -1,14 +1,14 @@
 package com.devsuperior.dscommerce.users.domain.vo;
 
-import java.util.Objects;
+import com.devsuperior.dscommerce.shared.domain.DomainException;
 
 public record ContactsInfo(
         Email email,
         Phone phone
 ) {
     public ContactsInfo {
-        Objects.requireNonNull(email, "user email is required");
-        Objects.requireNonNull(phone, "user phone number is required");
+        DomainException.requireNonNull(email, "user email is required");
+        DomainException.requireNonNull(phone, "user phone number is required");
     }
 
     public ContactsInfo withEmail(Email email) {
