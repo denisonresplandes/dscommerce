@@ -1,13 +1,13 @@
 package com.devsuperior.dscommerce.users.domain.vo;
 
-import java.util.Objects;
+import com.devsuperior.dscommerce.shared.domain.DomainException;
 
 public record Credentials(
         PasswordHash passwordHash
 ) {
 
     public Credentials {
-        Objects.requireNonNull(passwordHash, "user password is required");
+        DomainException.requireNonNull(passwordHash, "user password is required");
     }
 
     public Credentials withPasswordHash(PasswordHash newHash) {
