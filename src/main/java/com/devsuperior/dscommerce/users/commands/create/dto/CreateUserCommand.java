@@ -1,4 +1,4 @@
-package com.devsuperior.dscommerce.users.commands.create;
+package com.devsuperior.dscommerce.users.commands.create.dto;
 
 import java.time.LocalDate;
 

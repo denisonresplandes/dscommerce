@@ -1,5 +1,6 @@
 package com.devsuperior.dscommerce.users.commands.create;
 
+import com.devsuperior.dscommerce.users.commands.create.dto.CreateUserCommand;
 import com.devsuperior.dscommerce.users.commands.create.dto.CreateUserRequest;
 import com.devsuperior.dscommerce.users.commands.create.dto.CreateUserResponse;
 import jakarta.validation.Valid;

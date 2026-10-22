@@ -1,6 +1,7 @@
 package com.devsuperior.dscommerce.users.commands.create;
 
 import com.devsuperior.dscommerce.shared.domain.DomainException;
+import com.devsuperior.dscommerce.users.commands.create.dto.CreateUserCommand;
 import com.devsuperior.dscommerce.users.commands.create.dto.CreateUserResponse;
 import com.devsuperior.dscommerce.users.domain.User;
 import com.devsuperior.dscommerce.users.domain.UserPasswordHasher;

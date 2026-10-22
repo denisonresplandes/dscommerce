@@ -1,6 +1,5 @@
 package com.devsuperior.dscommerce.users.commands.create.dto;
 
-import com.devsuperior.dscommerce.users.commands.create.CreateUserCommand;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
