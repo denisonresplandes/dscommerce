@@ -15,7 +15,7 @@ public final class OrderMapper {
         Long id = Objects.nonNull(order.getId()) ? order.getId().value() : null;
         return new OrderEntity(
                 id,
-                order.getUserId().value(),
+                order.getClientId().value(),
                 order.getStatus(),
                 order.getCreatedAt()
         );

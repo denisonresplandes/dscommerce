@@ -10,37 +10,37 @@ import java.time.LocalDateTime;
 public class Order extends AggregateRoot {
 
     private final OrderId id;
-    private final UserId userId;
+    private final UserId clientId;
     private final LocalDateTime createdAt;
     private OrderStatus status;
 
-    private Order(OrderId id, UserId userId, OrderStatus status,
+    private Order(OrderId id, UserId clientId, OrderStatus status,
                   LocalDateTime createdAt) {
-        DomainException.requireNonNull(userId, "user id cannot be null");
+        DomainException.requireNonNull(clientId, "client id cannot be null");
         DomainException.requireNonNull(status, "order status cannot be null");
         DomainException.requireNonNull(createdAt, "created date cannot be null");
 
         this.id = id;
-        this.userId = userId;
+        this.clientId = clientId;
         this.status = status;
         this.createdAt = createdAt;
     }
 
-    public static Order create(UserId userId) {
+    public static Order create(UserId clientId) {
         return new Order(
                 null,
-                userId,
+                clientId,
                 OrderStatus.WAITING_PAYMENT,
                 LocalDateTime.now()
         );
     }
 
-    public static Order restore(OrderId id, UserId userId, OrderStatus status,
+    public static Order restore(OrderId id, UserId clientId, OrderStatus status,
                                 LocalDateTime createdAt) {
         DomainException.requireNonNull(id,"Order ID cannot be null.");
         return new Order(
                 id,
-                userId,
+                clientId,
                 status,
                 createdAt
         );
@@ -50,8 +50,8 @@ public class Order extends AggregateRoot {
         return id;
     }
 
-    public UserId getUserId() {
-        return userId;
+    public UserId getClientId() {
+        return clientId;
     }
 
     public OrderStatus getStatus() {
