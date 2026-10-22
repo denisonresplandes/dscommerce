@@ -1,4 +1,4 @@
-package com.devsuperior.dscommerce.users.infrastructure.config;
+package com.devsuperior.dscommerce.shared.infrastructure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,6 +7,12 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Configuração de segurança HTTP da aplicação inteira.
+ *
+ * <p>Fica em {@code shared} (e não em {@code users}) porque a regra vale para <b>todos</b> os módulos: ela
+ * não pertence ao domínio de usuários, apesar de, no futuro, depender dele para autenticar.
+ */
 @Configuration
 public class SecurityConfig {
 
