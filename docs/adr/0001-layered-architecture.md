@@ -58,7 +58,9 @@ presentation ──▶ application ──▶ domain ◀── infrastructure
   composição e de transação). Continua proibido importar JPA, web (`jakarta.persistence`, `org.springframework.web`)
   ou qualquer classe de `infrastructure`/`presentation`.
 - `infrastructure` **implementa** os ports (inversão de dependência) — é a única camada que conhece JPA/Argon2.
-- `presentation` só chama `application`; nunca `domain` nem `infrastructure`.
+- `presentation` só chama `application`; nunca `infrastructure` nem agregados/repositórios do `domain`.
+  Há duas exceções conscientes, codificadas no `ArchitectureTest`: o enum `OrderStatus` (exposto pela `OrderView` e
+  serializado no JSON) e a `DomainException` (o `GlobalExceptionHandler` existe para traduzi-la em HTTP 422).
 
 ### 2.3 Regras entre módulos
 
@@ -142,5 +144,8 @@ A separação entre escrita e leitura permanece, mas agora de forma mais simples
 
 ## 6. Como validar
 
-- `./mvnw test` — inclui os testes de arquitetura que quebram o build se uma regra da seção 2 for violada.
+- `./mvnw test` — inclui o `ArchitectureTest` (ArchUnit), que quebra o build se uma regra da seção 2 for violada:
+  independência do domínio, direção das camadas, `orders` enxergando só `users.api` (e só pelo ACL), sem ciclos
+  entre módulos e cada tipo de classe no pacote certo. As regras foram validadas com testes de mutação
+  (violações introduzidas de propósito são detectadas).
 - Estado anterior para comparação: `git diff v1-vertical-slice..refactor/layered-architecture`.

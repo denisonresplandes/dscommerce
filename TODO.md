@@ -50,12 +50,13 @@ Legenda: 🔴 alta (bug ou risco real) · 🟠 média · 🟢 baixa (polimento) 
 - [x] **E3.5** Repositórios Spring Data de leitura devem estender `Repository<>`, não `JpaRepository<>`
   (hoje expõem `save/delete` no lado de leitura).
 
-### Etapa 4 — Guardas
-- [ ] **E4.1** `ArchitectureTest` (ArchUnit): `domain` sem Spring/JPA; `presentation` não acessa `domain` nem
+### Etapa 4 — Guardas (falta só o PR: E4.4)
+- [x] **E4.1** `ArchitectureTest` (ArchUnit): `domain` sem Spring/JPA; `presentation` não acessa `domain` nem
   `infrastructure`; `application` não acessa `infrastructure`/`presentation`; `orders` só enxerga `users.api`;
   sem ciclos entre módulos.
-- [ ] **E4.2** Testes unitários de domínio: `Order` (todas as transições válidas/inválidas e idempotência),
-  `OrderStatus`, VOs de `users`.
+- [x] **E4.2** Testes unitários de domínio: `Order` (todas as transições válidas/inválidas e idempotência),
+  `OrderStatus`, VOs de `users`. (Fica de fora `PersonalInfo.isAdult()` até o bug 2.2 ser corrigido,
+  para não fixar em teste um comportamento errado.)
 - [x] **E4.3** Testes de API cobrindo todos os endpoints existentes (`UserApiTest`, `OrderApiTest`,
   `GlobalExceptionHandlerTest`).
 - [ ] **E4.4** Abrir PR (`refactor/layered-architecture` → `main`), merge **sem squash**, tag `v2-layered-architecture`.
