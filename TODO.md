@@ -1,6 +1,6 @@
 # TODO — dscommerce
 
-Estado em **2026-10-22**, branch `refactor/layered-architecture`.
+Estado em **2026-10-23**. Arquitetura em camadas na `main` (tag `v2-layered-architecture`); bugs da seção 2 corrigidos na branch `fix/user-validation-bugs`.
 Contexto e decisões: [`docs/adr/0001-layered-architecture.md`](docs/adr/0001-layered-architecture.md).
 Estado anterior (Vertical Slice) preservado na tag `v1-vertical-slice`.
 
@@ -63,31 +63,31 @@ Legenda: 🔴 alta (bug ou risco real) · 🟠 média · 🟢 baixa (polimento) 
 
 ---
 
-## 2. Bugs 🔴
+## 2. Bugs ✅ (corrigidos na branch `fix/user-validation-bugs`)
 
-- [ ] **2.1** 🔴 **`PasswordHash` aceita prefixo bcrypt inexistente.** `startsWith("$b$")`, mas o bcrypt real começa com
+- [x] **2.1** 🔴 **`PasswordHash` aceita prefixo bcrypt inexistente.** `startsWith("$b$")`, mas o bcrypt real começa com
   `$2a$`/`$2b$`/`$2y$`. O projeto só usa Argon2: aceitar somente `$argon2id$` (ou corrigir os prefixos bcrypt).
   Teste: hash bcrypt real passa; `"$b$qualquer"` é rejeitado.
-- [ ] **2.2** 🔴 **`PersonalInfo.isAdult()` usa `> 18`.** Quem tem exatamente 18 anos é tratado como menor.
+- [x] **2.2** 🔴 **`PersonalInfo.isAdult()` usa `> 18`.** Quem tem exatamente 18 anos é tratado como menor.
   Trocar por `>= AGE_OF_MAJORITY`. Teste no dia do 18º aniversário. Usar `Clock` (item 4.4) para o teste ser
   determinístico.
-- [ ] **2.3** 🔴 **E-mail duplicado não é tratado.** `UserEntity.email` não tem `unique`, e `UserCommandService` não
+- [x] **2.3** 🔴 **E-mail duplicado não é tratado.** `UserEntity.email` não tem `unique`, e `UserCommandService` não
   verifica. Dois usuários com o mesmo e-mail fazem `findByEmail` lançar `IncorrectResultSizeDataAccessException` (500).
   Ações: índice único em `tb_user.email`; `UserRepository.existsByEmail(Email)` checado **antes** de gerar o hash;
   `DataIntegrityViolationException` → 409 no `GlobalExceptionHandler` (cobre a corrida entre duas requisições);
   `EmailAlreadyInUseException` em `users.application.exception`.
-- [ ] **2.4** 🟠 **`GET /users/email` aceita qualquer string** e falha só no VO (hoje 422, mas para entrada
+- [x] **2.4** 🟠 **`GET /users/email` aceita qualquer string** e falha só no VO (hoje 422, mas para entrada
   claramente malformada o correto é 400). Adicionar `@Email` no `@RequestParam`.
-- [ ] **2.5** 🟠 **`Name` não normaliza**: não faz `trim()` (`Email` e `Phone` fazem), então `"  A"` passa na regra de
+- [x] **2.5** 🟠 **`Name` não normaliza**: não faz `trim()` (`Email` e `Phone` fazem), então `"  A"` passa na regra de
   tamanho. Rejeitar dígitos é frágil (barra "R2 D2", aceita "$%&"). Definir a regra e normalizar.
-- [ ] **2.6** 🟠 **Request e VO divergem**: `CreateUserRequest.phone` exige `^\d{11}$`, enquanto `Phone` aceita e
+- [x] **2.6** 🟠 **Request e VO divergem**: `CreateUserRequest.phone` exige `^\d{11}$`, enquanto `Phone` aceita e
   normaliza qualquer formato com 11 dígitos. Escolher um contrato (aceitar `(11) 98888-8888` e normalizar, ou exigir só
   dígitos) e documentar.
-- [ ] **2.7** 🟠 **Faltam tamanhos máximos no Request**: colunas têm `length = 100/100/20`, mas `name` e `email` não têm
+- [x] **2.7** 🟠 **Faltam tamanhos máximos no Request**: colunas têm `length = 100/100/20`, mas `name` e `email` não têm
   `@Size(max = …)`. Estouro vira erro de banco (500). Usar constantes compartilhadas entre Request e entidade.
-- [ ] **2.8** 🟠 **Política de senha**: `@Size(min = 6, max = 20)` é fraca e restritiva. Mínimo 8 e teto alto
+- [x] **2.8** 🟠 **Política de senha**: `@Size(min = 6, max = 20)` é fraca e restritiva. Mínimo 8 e teto alto
   (ex.: 128) para permitir passphrases. Com Argon2 não há motivo para limite baixo.
-- [ ] **2.9** 🟢 `ConstraintViolationException` expõe, na mensagem, o nome do método (ex.: `findById.id: …`).
+- [x] **2.9** 🟢 `ConstraintViolationException` expõe, na mensagem, o nome do método (ex.: `findById.id: …`).
   Remover `@Validated` dos controllers e usar a validação de métodos nativa do Spring (devolve
   `HandlerMethodValidationException`, já tratada pela `ResponseEntityExceptionHandler`), ou formatar a mensagem.
 
@@ -99,12 +99,12 @@ Legenda: 🔴 alta (bug ou risco real) · 🟠 média · 🟢 baixa (polimento) 
   `Pageable` com teto de `size` e *whitelist* de ordenação; para `orders`, avaliar paginação por cursor (keyset).
   Devolver envelope próprio, não `PageImpl`.
 - [ ] **3.2** 🟠 **Índices.** `tb_order.user_id` (usado por `findAllByClientId`) e `tb_user.email` não têm índice.
-  Declarar em `@Table(indexes = …)`. A FK `fk_order_user` está criada à mão no `import.sql`; declarar no mapeamento
+  `tb_user.email` já tem índice (criado pela restrição única do item 2.3). Para `tb_order.user_id`, declarar em `@Table(indexes = …)`. A FK `fk_order_user` está criada à mão no `import.sql`; declarar no mapeamento
   ou na migration (item 4.1).
 - [ ] **3.3** 🟠 **`GET /users/{id}/orders` faz 2 queries** (`existsById` + `select`). Medir e decidir: (a) lista vazia
   sem checar, (b) uma query única. Se o requisito é 404, manter (b) com o `ClientLookup`.
 - [ ] **3.4** 🟠 **Argon2 no thread da requisição, sem limite.** Cada `POST /users` usa ~16 MB e CPU
-  (`m=16384,t=2,p=1`). Ações: checar duplicidade antes do hash (2.3); limitar concorrência (semáforo/bulkhead) ou
+  (`m=16384,t=2,p=1`). Ações: ~~checar duplicidade antes do hash~~ (feito no item 2.3); limitar concorrência (semáforo/bulkhead) ou
   *rate limit*; revisar os parâmetros contra o mínimo OWASP atual (m ≥ 19 MiB, t = 2, p = 1) com benchmark.
 - [ ] **3.5** 🟠 **`save()` de agregado existente faz `SELECT` + `UPDATE`** (mapper cria entidade *detached* com id →
   `merge`). Ao implementar comandos de `orders`, carregar a entidade gerenciada e aplicar as mudanças.
