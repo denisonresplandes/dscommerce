@@ -9,4 +9,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * {@link JpaUserRepositoryAdapter}, que o esconde atrás do port {@code UserRepository} do domínio.
  */
 interface SpringDataUserRepository extends JpaRepository<UserEntity, Long> {
+
+    /**
+     * Query derivada: o Spring Data lê o NOME do método ("existsBy" + atributo "Email") e gera sozinho um
+     * {@code select ... where email = ?} que devolve apenas true/false.
+     */
+    boolean existsByEmail(String email);
 }

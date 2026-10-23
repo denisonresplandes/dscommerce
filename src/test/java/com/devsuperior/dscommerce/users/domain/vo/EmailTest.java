@@ -33,6 +33,20 @@ class EmailTest {
     }
 
     @Test
+    @DisplayName("aceita exatamente 100 caracteres (tamanho da coluna) e rejeita 101")
+    void shouldEnforceMaxLength() {
+        String domain = "@example.com";                                       // 12 caracteres
+        String atLimit = "a".repeat(Email.MAX_LENGTH - domain.length()) + domain;      // 100 no total
+        String overLimit = "a".repeat(Email.MAX_LENGTH - domain.length() + 1) + domain; // 101 no total
+
+        assertThat(new Email(atLimit).value()).hasSize(Email.MAX_LENGTH);
+
+        assertThatThrownBy(() -> new Email(overLimit))
+                .isInstanceOf(DomainException.class)
+                .hasMessage("user email address is too long.");
+    }
+
+    @Test
     @DisplayName("rejeita nulo")
     void shouldRejectNull() {
         assertThatThrownBy(() -> new Email(null))

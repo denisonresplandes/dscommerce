@@ -2,6 +2,7 @@ package com.devsuperior.dscommerce.users.infrastructure.persistence;
 
 import com.devsuperior.dscommerce.users.domain.User;
 import com.devsuperior.dscommerce.users.domain.UserRepository;
+import com.devsuperior.dscommerce.users.domain.vo.Email;
 import com.devsuperior.dscommerce.users.domain.vo.UserId;
 import org.springframework.stereotype.Repository;
 
@@ -34,5 +35,10 @@ class JpaUserRepositoryAdapter implements UserRepository {
     public Optional<User> findById(UserId id) {
         return springDataRepository.findById(id.value())
                 .map(UserMapper::toDomain);
+    }
+
+    @Override
+    public boolean existsByEmail(Email email) {
+        return springDataRepository.existsByEmail(email.value());
     }
 }

@@ -118,7 +118,8 @@ class UserApiTest {
     @Test
     @DisplayName("GET /users/email é insensível a maiúsculas")
     void shouldFindUserByEmailIgnoringCase() throws Exception {
-        mockMvc.perform(get("/users/email").param("email", "  ALEX@gmail.com "))
+        // Sem espaços nas pontas: desde o bug 2.4 o @Email do parâmetro recusa e-mail com espaço (400).
+        mockMvc.perform(get("/users/email").param("email", "ALEX@gmail.com"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Alex Green"));
     }

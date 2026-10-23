@@ -9,10 +9,12 @@ public record PasswordHash(String value) {
         if (value.isBlank()) {
             throw new DomainException("user password hash cannot be blank.");
         }
-        // Verificação básica
-        // Hashes Argon2 sempre começam com $argon2id$ ou similar.
-        // Hashes BCrypt sempre começam com $b$ ou similar.
-        if (!value.startsWith("$argon2") && !value.startsWith("$b$")) {
+        // Verificação básica: este valor TEM que ser um hash, nunca uma senha em texto puro.
+        // O projeto gera apenas hashes Argon2 (Argon2UserPasswordHasher), cujo formato começa sempre com
+        // "$argon2id$" (ou "$argon2i$" / "$argon2d$", as outras variantes do algoritmo).
+        // BUG corrigido: antes também se aceitava o prefixo "$b$", que não existe em nenhum formato real
+        // (o BCrypt usa "$2a$", "$2b$" ou "$2y$") e deixava passar texto qualquer que começasse assim.
+        if (!value.startsWith("$argon2")) {
             throw new DomainException("The provided string is not a valid hash. " +
                     "Did you forget to encode the password?");
         }

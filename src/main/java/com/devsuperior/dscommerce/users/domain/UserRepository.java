@@ -1,5 +1,6 @@
 package com.devsuperior.dscommerce.users.domain;
 
+import com.devsuperior.dscommerce.users.domain.vo.Email;
 import com.devsuperior.dscommerce.users.domain.vo.UserId;
 
 import java.util.Optional;
@@ -28,4 +29,12 @@ public interface UserRepository {
     User save(User user);
 
     Optional<User> findById(UserId id);
+
+    /**
+     * Informa se já existe algum usuário com este e-mail.
+     *
+     * <p>Recebe o {@link Email} (já normalizado: sem espaços e em minúsculas), e não uma {@code String}, para que
+     * "MARIA@gmail.com" e "maria@gmail.com" sejam reconhecidos como o mesmo e-mail.
+     */
+    boolean existsByEmail(Email email);
 }

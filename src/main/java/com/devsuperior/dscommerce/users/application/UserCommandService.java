@@ -2,6 +2,7 @@ package com.devsuperior.dscommerce.users.application;
 
 import com.devsuperior.dscommerce.shared.domain.DomainException;
 import com.devsuperior.dscommerce.users.application.command.CreateUserCommand;
+import com.devsuperior.dscommerce.users.application.exception.EmailAlreadyInUseException;
 import com.devsuperior.dscommerce.users.application.view.UserView;
 import com.devsuperior.dscommerce.users.application.view.UserViewMapper;
 import com.devsuperior.dscommerce.users.domain.User;
@@ -46,24 +47,34 @@ public class UserCommandService {
     public UserView create(CreateUserCommand command) {
         DomainException.requireNonNull(command, "create user command cannot be null");
 
-        // Cada "new" abaixo valida e normaliza: se algo for inválido, uma DomainException é lançada aqui e o
-        // GlobalExceptionHandler a transforma em HTTP 422. Nenhum dado inválido chega ao banco.
-        User newUser = User.create(
-                new PersonalInfo(
-                        new Name(command.name()),
-                        new DateOfBirth(command.dateOfBirth())
-                ),
-                new ContactsInfo(
-                        new Email(command.email()),
-                        new Phone(command.phone())
-                ),
-                // O hash é gerado aqui, pela porta do domínio; o agregado nunca recebe a senha em texto puro.
-                new Credentials(
-                        passwordHasher.toHash(command.password())
-                )
+        // 1) Valida e normaliza os dados. Cada "new" abaixo aplica as regras do value object: se algo for
+        //    inválido, uma DomainException é lançada aqui e o GlobalExceptionHandler a transforma em HTTP 422.
+        //    Nenhum dado inválido avança para as etapas seguintes (que envolvem banco e CPU).
+        PersonalInfo personalInfo = new PersonalInfo(
+                new Name(command.name()),
+                new DateOfBirth(command.dateOfBirth())
+        );
+        ContactsInfo contactsInfo = new ContactsInfo(
+                new Email(command.email()),
+                new Phone(command.phone())
         );
 
-        User savedUser = userRepository.save(newUser);
+        // 2) Garante que o e-mail está livre. A ORDEM IMPORTA: esta checagem é barata (um SELECT) e vem ANTES de
+        //    gerar o hash, que é propositalmente caro (Argon2 gasta ~16 MB e bastante CPU por chamada). Assim, um
+        //    e-mail repetido é recusado sem gastar nada disso — o que também evita que alguém use cadastros
+        //    repetidos para sobrecarregar o servidor.
+        //    Esta verificação é uma checagem rápida, não a garantia final: duas requisições simultâneas podem
+        //    passar juntas por aqui. A garantia final é a restrição UNIQUE do banco (veja UserEntity).
+        if (userRepository.existsByEmail(contactsInfo.email())) {
+            throw new EmailAlreadyInUseException(contactsInfo.email().value());
+        }
+
+        // 3) Só agora gera o hash, pela porta do domínio; o agregado nunca recebe a senha em texto puro.
+        Credentials credentials = new Credentials(
+                passwordHasher.toHash(command.password())
+        );
+
+        User savedUser = userRepository.save(User.create(personalInfo, contactsInfo, credentials));
 
         // Devolve uma view, não o agregado: as camadas externas não devem manipular objetos de domínio.
         return UserViewMapper.toView(savedUser);
