@@ -23,18 +23,18 @@ Legenda: 🔴 alta (bug ou risco real) · 🟠 média · 🟢 baixa (polimento) 
 - [x] `SecurityConfig` movido para `shared/infrastructure/config`
 - [x] `GlobalExceptionHandlerTest` fixando o contrato HTTP de erros
 
-### Etapa 2 — Módulo `users`
-- [ ] **E2.1** Renomear `UserWriteRepository` → `UserRepository` (port do agregado no domínio); manter só `save` e
+### Etapa 2 — Módulo `users` ✅
+- [x] **E2.1** Renomear `UserWriteRepository` → `UserRepository` (port do agregado no domínio); manter só `save` e
   `findById` (remover `delete`/`deleteById`, que nenhum caso de uso usa). Adapter e Spring Data renomeados junto.
-- [ ] **E2.2** Criar a camada `application`: `UserView` (read model), `UserQueryRepository` (port de leitura),
+- [x] **E2.2** Criar a camada `application`: `UserView` (read model), `UserQueryRepository` (port de leitura),
   `UserQueryService`, `UserCommandService`, `command/CreateUserCommand`, `exception/UserNotFoundException`.
   Leitura por `select new UserView(...)`, **sem** montar o agregado nem revalidar VOs.
-- [ ] **E2.3** Criar `presentation`: um `UserController` (substitui 4 controllers), `dto/` (`CreateUserRequest`,
+- [x] **E2.3** Criar `presentation`: um `UserController` (substitui 4 controllers), `dto/` (`CreateUserRequest`,
   `UserResponse` único no lugar de `UserResponse` + `CreateUserResponse` idênticos) e `UserWebMapper`.
-- [ ] **E2.4** Remover os pacotes `commands/`, `queries/` e as classes obsoletas (`*Handler`, `UserSummary`,
+- [x] **E2.4** Remover os pacotes `commands/`, `queries/` e as classes obsoletas (`*Handler`, `UserSummary`,
   `UserSummaryProjection`, `UserReadRepository`, `UserResponseMapper`, `CreateUserMapper`).
-- [ ] **E2.5** Expor `users.api.UserModuleApi` (Facade) com `existsById(Long)`, para uso do módulo `orders`.
-- [ ] **E2.6** Agrupar a infraestrutura de hash: `Argon2UserPasswordHasher` e o bean `PasswordEncoder` no mesmo
+- [x] **E2.5** Expor `users.api.UserModuleApi` (Facade) com `existsById(Long)`, para uso do módulo `orders`.
+- [x] **E2.6** Agrupar a infraestrutura de hash: `Argon2UserPasswordHasher` e o bean `PasswordEncoder` no mesmo
   pacote `infrastructure/security`.
 
 ### Etapa 3 — Módulo `orders`
@@ -55,8 +55,8 @@ Legenda: 🔴 alta (bug ou risco real) · 🟠 média · 🟢 baixa (polimento) 
   sem ciclos entre módulos.
 - [ ] **E4.2** Testes unitários de domínio: `Order` (todas as transições válidas/inválidas e idempotência),
   `OrderStatus`, VOs de `users`.
-- [ ] **E4.3** Testes de API cobrindo todos os endpoints existentes (`GET /users`, `/users/{id}`, `/users/email`,
-  `POST /users`, `/orders`, `/orders/{id}`, `/users/{id}/orders`).
+- [ ] **E4.3** Testes de API cobrindo todos os endpoints existentes. **`users` já coberto** (`UserApiTest`);
+  faltam `/orders`, `/orders/{id}` e `/users/{id}/orders`.
 - [ ] **E4.4** Abrir PR (`refactor/layered-architecture` → `main`), merge **sem squash**, tag `v2-layered-architecture`.
 
 ---

@@ -54,6 +54,9 @@ presentation ──▶ application ──▶ domain ◀── infrastructure
 
 - `domain` não conhece Spring, JPA, web nem nenhuma outra camada.
 - `application` orquestra casos de uso e define *ports* (interfaces) de que precisa; só conhece `domain`.
+  Por pragmatismo, os services usam as anotações do Spring `@Service` e `@Transactional` (são metadados de
+  composição e de transação). Continua proibido importar JPA, web (`jakarta.persistence`, `org.springframework.web`)
+  ou qualquer classe de `infrastructure`/`presentation`.
 - `infrastructure` **implementa** os ports (inversão de dependência) — é a única camada que conhece JPA/Argon2.
 - `presentation` só chama `application`; nunca `domain` nem `infrastructure`.
 
