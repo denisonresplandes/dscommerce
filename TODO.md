@@ -37,16 +37,17 @@ Legenda: 🔴 alta (bug ou risco real) · 🟠 média · 🟢 baixa (polimento) 
 - [x] **E2.6** Agrupar a infraestrutura de hash: `Argon2UserPasswordHasher` e o bean `PasswordEncoder` no mesmo
   pacote `infrastructure/security`.
 
-### Etapa 3 — Módulo `orders`
-- [ ] **E3.1** Criar `orders.domain.vo.ClientId` e usá-lo em `Order`, `OrderEntity`, mappers (fim da dependência de
-  `users.domain.vo.UserId`). Completar o renome `userId → clientId` em views/respostas.
-- [ ] **E3.2** Port `ClientLookup` (application) + `orders.infrastructure.acl.UserModuleClientLookup`, que chama
+### Etapa 3 — Módulo `orders` ✅
+- [x] **E3.1** Criar `orders.domain.vo.ClientId` e usá-lo em `Order`, `OrderEntity`, mappers (fim da dependência de
+  `users.domain.vo.UserId`). Renome `userId → clientId` feito em domínio, entidade e view; o campo **público** da API segue `userId`
+  (mudar quebraria clientes; ver item 5.4).
+- [x] **E3.2** Port `ClientLookup` (application) + `orders.infrastructure.acl.UserModuleClientLookup`, que chama
   `users.api.UserModuleApi` (Anti-Corruption Layer). `ClientNotFoundException` própria de `orders`.
-- [ ] **E3.3** Mesma estrutura de `users`: `OrderRepository` (`save`, `findById`), `OrderView`, `OrderQueryRepository`,
+- [x] **E3.3** Mesma estrutura de `users`: `OrderRepository` (`save`, `findById`), `OrderView`, `OrderQueryRepository`,
   `OrderQueryService`, `OrderController` (mapeia `/orders`, `/orders/{id}` e `/users/{userId}/orders`),
   `OrderWebMapper`.
-- [ ] **E3.4** Corrigir o typo do pacote `infraestructure` → `infrastructure` (junto da movimentação).
-- [ ] **E3.5** Repositórios Spring Data de leitura devem estender `Repository<>`, não `JpaRepository<>`
+- [x] **E3.4** Corrigir o typo do pacote `infraestructure` → `infrastructure` (junto da movimentação).
+- [x] **E3.5** Repositórios Spring Data de leitura devem estender `Repository<>`, não `JpaRepository<>`
   (hoje expõem `save/delete` no lado de leitura).
 
 ### Etapa 4 — Guardas
@@ -55,8 +56,8 @@ Legenda: 🔴 alta (bug ou risco real) · 🟠 média · 🟢 baixa (polimento) 
   sem ciclos entre módulos.
 - [ ] **E4.2** Testes unitários de domínio: `Order` (todas as transições válidas/inválidas e idempotência),
   `OrderStatus`, VOs de `users`.
-- [ ] **E4.3** Testes de API cobrindo todos os endpoints existentes. **`users` já coberto** (`UserApiTest`);
-  faltam `/orders`, `/orders/{id}` e `/users/{id}/orders`.
+- [x] **E4.3** Testes de API cobrindo todos os endpoints existentes (`UserApiTest`, `OrderApiTest`,
+  `GlobalExceptionHandlerTest`).
 - [ ] **E4.4** Abrir PR (`refactor/layered-architecture` → `main`), merge **sem squash**, tag `v2-layered-architecture`.
 
 ---
@@ -141,6 +142,8 @@ Legenda: 🔴 alta (bug ou risco real) · 🟠 média · 🟢 baixa (polimento) 
   `create` valida o cliente via `ClientLookup`.
 - [ ] **5.2** 🟠 **Itens do pedido e produtos** (hoje `Order` só tem cliente, status e data).
 - [ ] **5.3** 🟢 Update e delete de usuário.
+- [ ] **5.4** 🟢 **API v2**: renomear o campo público `userId` → `clientId` nas respostas de pedido (hoje o
+  `OrderWebMapper` faz a ponte entre o nome interno e o público).
 
 ---
 
