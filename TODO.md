@@ -39,8 +39,8 @@ Legenda: 🔴 alta (bug ou risco real) · 🟠 média · 🟢 baixa (polimento) 
 
 ### Etapa 3 — Módulo `orders` ✅
 - [x] **E3.1** Criar `orders.domain.vo.ClientId` e usá-lo em `Order`, `OrderEntity`, mappers (fim da dependência de
-  `users.domain.vo.UserId`). Renome `userId → clientId` feito em domínio, entidade e view; o campo **público** da API segue `userId`
-  (mudar quebraria clientes; ver item 5.4).
+  `users.domain.vo.UserId`). Renome `userId → clientId` feito em domínio, entidade, view e também no JSON público
+  (a API ainda não tinha consumidores).
 - [x] **E3.2** Port `ClientLookup` (application) + `orders.infrastructure.acl.UserModuleClientLookup`, que chama
   `users.api.UserModuleApi` (Anti-Corruption Layer). `ClientNotFoundException` própria de `orders`.
 - [x] **E3.3** Mesma estrutura de `users`: `OrderRepository` (`save`, `findById`), `OrderView`, `OrderQueryRepository`,
@@ -142,8 +142,6 @@ Legenda: 🔴 alta (bug ou risco real) · 🟠 média · 🟢 baixa (polimento) 
   `create` valida o cliente via `ClientLookup`.
 - [ ] **5.2** 🟠 **Itens do pedido e produtos** (hoje `Order` só tem cliente, status e data).
 - [ ] **5.3** 🟢 Update e delete de usuário.
-- [ ] **5.4** 🟢 **API v2**: renomear o campo público `userId` → `clientId` nas respostas de pedido (hoje o
-  `OrderWebMapper` faz a ponte entre o nome interno e o público).
 
 ---
 

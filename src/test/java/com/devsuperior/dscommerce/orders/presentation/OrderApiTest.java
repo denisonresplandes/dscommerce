@@ -16,8 +16,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Testes de API dos pedidos, a partir dos dados do {@code import.sql} (3 pedidos: #1 e #3 do usuário 1, #2 do
- * usuário 2). Verificam só o contrato HTTP — em particular, que o campo público continua {@code userId}
- * mesmo com o conceito interno já chamando {@code clientId}.
+ * usuário 2). Verificam só o contrato HTTP — em particular, que o cliente do pedido é exposto como
+ * {@code clientId} (e não mais {@code userId}).
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -35,13 +35,13 @@ class OrderApiTest {
     }
 
     @Test
-    @DisplayName("GET /orders/{id} devolve o pedido com o campo público userId")
+    @DisplayName("GET /orders/{id} devolve o pedido com o campo clientId")
     void shouldFindOrderById() throws Exception {
         mockMvc.perform(get("/orders/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.userId").value(1))
-                .andExpect(jsonPath("$.clientId").doesNotExist())
+                .andExpect(jsonPath("$.clientId").value(1))
+                .andExpect(jsonPath("$.userId").doesNotExist())
                 .andExpect(jsonPath("$.status").value("WAITING_PAYMENT"))
                 .andExpect(jsonPath("$.createdAt").value("2020-07-25T13:00:00"));
     }
@@ -60,7 +60,7 @@ class OrderApiTest {
         mockMvc.perform(get("/users/1/orders"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[*].userId", everyItem(equalTo(1))));
+                .andExpect(jsonPath("$[*].clientId", everyItem(equalTo(1))));
 
         mockMvc.perform(get("/users/2/orders"))
                 .andExpect(status().isOk())

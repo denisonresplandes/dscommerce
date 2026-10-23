@@ -4,9 +4,11 @@ import com.devsuperior.dscommerce.orders.application.view.OrderView;
 import com.devsuperior.dscommerce.orders.presentation.dto.OrderResponse;
 
 /**
- * Converte {@link OrderView} (modelo da aplicação, vocabulário {@code clientId}) em {@link OrderResponse}
- * (contrato público, campo {@code userId}). É um exemplo concreto de por que manter os dois modelos separados:
- * o nome interno mudou e o JSON da API não.
+ * Converte {@link OrderView} (modelo da aplicação) em {@link OrderResponse} (contrato público da API).
+ *
+ * <p>Hoje os campos coincidem, mas manter os dois modelos separados é o que permite a cada lado evoluir sozinho:
+ * a aplicação pode renomear ou reorganizar a view sem alterar o JSON, e a API pode formatar ou esconder campos
+ * sem afetar a aplicação. Só este mapper precisa acompanhar.
  */
 final class OrderWebMapper {
 
