@@ -1,12 +1,19 @@
 package com.devsuperior.dscommerce.users.infrastructure.persistence;
 
 import com.devsuperior.dscommerce.users.domain.User;
-import com.devsuperior.dscommerce.users.domain.UserSummary;
 import com.devsuperior.dscommerce.users.domain.vo.*;
 
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Converte entre o modelo de domínio ({@link User}) e o de persistência ({@link UserEntity}).
+ *
+ * <p>É o que permite manter os dois modelos separados: o domínio tem value objects e comportamento; a entidade é
+ * só um espelho das colunas. {@code toDomain} <b>revalida</b> os dados ao reconstruir os value objects — vale
+ * ao carregar um agregado para uma operação de escrita. Para leituras isso é dispensado (veja
+ * {@code UserQueryRepository}), e por isso a antiga conversão para "summary" deixou de existir.
+ */
 public final class UserMapper {
 
     private UserMapper() {}
@@ -39,21 +46,6 @@ public final class UserMapper {
                 ),
                 new Credentials(
                         new PasswordHash(entity.getPasswordHash())
-                )
-        );
-    }
-
-    public static UserSummary toSummary(UserSummaryProjection projection) {
-        Objects.requireNonNull(projection, "projection is required");
-        return new UserSummary(
-                new UserId(projection.getId()),
-                new PersonalInfo(
-                        new Name(projection.getName()),
-                        new DateOfBirth(projection.getDateOfBirth())
-                ),
-                new ContactsInfo(
-                        new Email(projection.getEmail()),
-                        new Phone(projection.getPhone())
                 )
         );
     }
