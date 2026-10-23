@@ -1,6 +1,6 @@
 # TODO — dscommerce
 
-Estado em **2026-10-23**. Arquitetura em camadas na `main` (tag `v2-layered-architecture`); bugs da seção 2 corrigidos na branch `fix/user-validation-bugs`.
+Estado em **2026-10-23**. Arquitetura em camadas na `main` (tag `v2-layered-architecture`); bugs da seção 2 corrigidos e integrados à `main` (PR #2).
 Contexto e decisões: [`docs/adr/0001-layered-architecture.md`](docs/adr/0001-layered-architecture.md).
 Estado anterior (Vertical Slice) preservado na tag `v1-vertical-slice`.
 
@@ -50,7 +50,7 @@ Legenda: 🔴 alta (bug ou risco real) · 🟠 média · 🟢 baixa (polimento) 
 - [x] **E3.5** Repositórios Spring Data de leitura devem estender `Repository<>`, não `JpaRepository<>`
   (hoje expõem `save/delete` no lado de leitura).
 
-### Etapa 4 — Guardas (falta só o PR: E4.4)
+### Etapa 4 — Guardas ✅
 - [x] **E4.1** `ArchitectureTest` (ArchUnit): `domain` sem Spring/JPA; `presentation` não acessa `domain` nem
   `infrastructure`; `application` não acessa `infrastructure`/`presentation`; `orders` só enxerga `users.api`;
   sem ciclos entre módulos.
@@ -59,11 +59,11 @@ Legenda: 🔴 alta (bug ou risco real) · 🟠 média · 🟢 baixa (polimento) 
   para não fixar em teste um comportamento errado.)
 - [x] **E4.3** Testes de API cobrindo todos os endpoints existentes (`UserApiTest`, `OrderApiTest`,
   `GlobalExceptionHandlerTest`).
-- [ ] **E4.4** Abrir PR (`refactor/layered-architecture` → `main`), merge **sem squash**, tag `v2-layered-architecture`.
+- [x] **E4.4** Abrir PR (`refactor/layered-architecture` → `main`), merge **sem squash**, tag `v2-layered-architecture`.
 
 ---
 
-## 2. Bugs ✅ (corrigidos na branch `fix/user-validation-bugs`)
+## 2. Bugs ✅ (corrigidos e integrados à `main` pelo PR #2)
 
 - [x] **2.1** 🔴 **`PasswordHash` aceita prefixo bcrypt inexistente.** `startsWith("$b$")`, mas o bcrypt real começa com
   `$2a$`/`$2b$`/`$2y$`. O projeto só usa Argon2: aceitar somente `$argon2id$` (ou corrigir os prefixos bcrypt).
