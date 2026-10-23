@@ -1,10 +1,19 @@
-package com.devsuperior.dscommerce.orders.infraestructure.persistence;
+package com.devsuperior.dscommerce.orders.infrastructure.persistence;
 
 import com.devsuperior.dscommerce.orders.domain.OrderStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
+/**
+ * Modelo de <b>persistência</b> do pedido: um espelho da tabela {@code tb_order}, sem regras de negócio.
+ *
+ * <p>É deliberadamente diferente do agregado {@code Order}: aqui só há colunas e anotações JPA. O domínio nunca
+ * enxerga esta classe, e o {@link OrderMapper} faz a tradução.
+ *
+ * <p>O atributo chama-se {@code clientId} (vocabulário de pedidos) mas continua mapeado para a coluna
+ * {@code user_id}, então o schema e o {@code import.sql} não mudaram.
+ */
 @Entity
 @Table(name = "tb_order")
 public class OrderEntity {
@@ -14,7 +23,7 @@ public class OrderEntity {
     private Long id;
 
     @Column(name = "user_id", nullable = false)
-    private Long userId;
+    private Long clientId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -25,10 +34,10 @@ public class OrderEntity {
 
     OrderEntity() {}
 
-    public OrderEntity(Long id, Long userId, OrderStatus status,
+    public OrderEntity(Long id, Long clientId, OrderStatus status,
                        LocalDateTime createdAt) {
         this.id = id;
-        this.userId = userId;
+        this.clientId = clientId;
         this.status = status;
         this.createdAt = createdAt;
     }
@@ -37,8 +46,8 @@ public class OrderEntity {
         return id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getClientId() {
+        return clientId;
     }
 
     public OrderStatus getStatus() {
