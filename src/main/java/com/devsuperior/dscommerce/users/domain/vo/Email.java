@@ -1,6 +1,7 @@
 package com.devsuperior.dscommerce.users.domain.vo;
 
-import java.util.Objects;
+import com.devsuperior.dscommerce.shared.domain.DomainException;
+
 import java.util.regex.Pattern;
 
 public record Email(String value) {
@@ -10,11 +11,10 @@ public record Email(String value) {
 
     public Email {
         // validação e normalização
-        value = Objects.requireNonNull(value, "user mail address is required")
-                .trim()
-                .toLowerCase();
+        DomainException.requireNonNull(value, "user mail address is required");
+        value = value.trim().toLowerCase();
         if (value.isBlank() || !PATTERN.matcher(value).matches()) {
-            throw new IllegalArgumentException("invalid user email address");
+            throw new DomainException("invalid user email address");
         }
     }
 }

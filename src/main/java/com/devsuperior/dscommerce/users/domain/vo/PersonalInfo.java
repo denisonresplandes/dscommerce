@@ -1,8 +1,9 @@
 package com.devsuperior.dscommerce.users.domain.vo;
 
+import com.devsuperior.dscommerce.shared.domain.DomainException;
+
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Objects;
 
 public record PersonalInfo(
         Name name,
@@ -12,8 +13,8 @@ public record PersonalInfo(
     public static final int AGE_OF_MAJORITY = 18;
 
     public PersonalInfo {
-        Objects.requireNonNull(name, "user name is required");
-        Objects.requireNonNull(dateOfBirth, "user date of birth is required");
+        DomainException.requireNonNull(name, "user name is required");
+        DomainException.requireNonNull(dateOfBirth, "user date of birth is required");
     }
 
     public  boolean isAdult() {

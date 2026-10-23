@@ -62,6 +62,26 @@
 			<version>1.84</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!-- Testes: JUnit 5, AssertJ, Mockito e suporte a @SpringBootTest -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Testes da camada web: MockMvc e @AutoConfigureMockMvc -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webmvc-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Testes de arquitetura: garante em build as regras de dependência entre camadas e módulos -->
+		<dependency>
+			<groupId>com.tngtech.archunit</groupId>
+			<artifactId>archunit-junit5</artifactId>
+			<version>1.4.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
